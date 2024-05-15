@@ -17,7 +17,8 @@ defmodule TemperatureDemo.Application do
       # Start a worker by calling: TemperatureDemo.Worker.start_link(arg)
       # {TemperatureDemo.Worker, arg},
       # Start to serve requests, typically the last entry
-      TemperatureDemoWeb.Endpoint
+      TemperatureDemoWeb.Endpoint,
+      {TemperatureDemo.SensorSimulator, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

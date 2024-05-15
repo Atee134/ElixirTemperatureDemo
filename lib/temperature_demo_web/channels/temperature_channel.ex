@@ -5,8 +5,8 @@ defmodule TemperatureDemoWeb.TemperatureChannel do
     {:ok, socket}
   end
 
-  def handle_in("new_measurement", %{"temp" => _temp} = message, socket) do
-    broadcast(socket, "new_temperature", message)
+  def handle_info(%{"temp" => temp}, socket) do
+    broadcast(socket, "new_temperature", %{"temp" => temp})
     {:noreply, socket}
   end
 end

@@ -3,9 +3,12 @@ defmodule TemperatureDemoWeb.UserSocket do
 
   channel "temperature:lobby", TemperatureDemoWeb.TemperatureChannel
 
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
-  end
+  # Optionally, you can define transport options directly here:
+  transport :websocket, Phoenix.Transports.WebSocket,
+    timeout: 45_000,
+    compress: false
 
+  # This function is often used to authorize the socket connection
+  def connect(_params, socket), do: {:ok, socket}
   def id(_socket), do: nil
 end
