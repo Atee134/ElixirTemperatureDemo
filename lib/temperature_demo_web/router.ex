@@ -18,6 +18,7 @@ defmodule TemperatureDemoWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/temperatures", TemperatureController, :index
   end
 
   # Other scopes may use custom stacks.

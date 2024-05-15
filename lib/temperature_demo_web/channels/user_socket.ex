@@ -1,7 +1,7 @@
-defmodule MyAppWeb.UserSocket do
+defmodule TemperatureDemoWeb.UserSocket do
   use Phoenix.Socket
 
-  channel "temperature:lobby", MyAppWeb.TemperatureChannel
+  channel "temperature:lobby", TemperatureDemoWeb.TemperatureChannel
 
   def connect(_params, socket, _connect_info) do
     {:ok, socket}
