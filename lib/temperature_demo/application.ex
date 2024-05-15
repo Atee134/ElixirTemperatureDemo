@@ -1,34 +1,29 @@
 defmodule TemperatureDemo.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
-  @moduledoc false
-
   use Application
 
   @impl true
   def start(_type, _args) do
-    children = [
+    base_children = [
       TemperatureDemoWeb.Telemetry,
       TemperatureDemo.Repo,
       {DNSCluster, query: Application.get_env(:temperature_demo, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: TemperatureDemo.PubSub},
-      # Start the Finch HTTP client for sending emails
       {Finch, name: TemperatureDemo.Finch},
-      # Start a worker by calling: TemperatureDemo.Worker.start_link(arg)
-      # {TemperatureDemo.Worker, arg},
-      # Start to serve requests, typically the last entry
       TemperatureDemoWeb.Endpoint,
-      {TemperatureDemo.SensorSimulator, []}
+      {Registry, keys: :unique, name: TemperatureDemo.Registry}  # Corrected Registry definition
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
+    sensor_group_children = for group_id <- 1..20 do
+      Supervisor.child_spec({TemperatureDemo.Sensors.SensorGroupServer, %{group_id: group_id}},
+        id: {:sensor_group, group_id})  # Unique ID for each child
+    end
+
+    children = base_children ++ sensor_group_children
+
     opts = [strategy: :one_for_one, name: TemperatureDemo.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
     TemperatureDemoWeb.Endpoint.config_change(changed, removed)
