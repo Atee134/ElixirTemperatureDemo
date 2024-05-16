@@ -15,11 +15,11 @@ defmodule TemperatureDemo.Sensors.Sensor do
 
   # Handles the periodic update based on the tick
   def handle_info(:tick, state) do
-    new_temp = state[:temp] + state[:rate]
-    new_temp = apply_limits(new_temp, state[:min_temp], state[:max_temp])
+    {new_temp, new_rate} = update_temperature(state[:temp], state[:rate], state[:min_temp], state[:max_temp])
 
-    # Update the state with the new temperature
+    # Update the state with the new temperature and potentially new rate
     updated_state = Map.put(state, :temp, new_temp)
+    updated_state = Map.put(updated_state, :rate, new_rate)
 
     # Broadcast the new temperature
     broadcast_new_temperature(state[:sensor_id], new_temp)
@@ -31,14 +31,15 @@ defmodule TemperatureDemo.Sensors.Sensor do
   end
 
   defp schedule_tick do
-    Process.send_after(self(), :tick, 1000)  # Send a tick every second
+    Process.send_after(self(), :tick, 500)  # Send a tick every second
   end
 
-  defp apply_limits(temp, min, max) do
+  defp update_temperature(temp, rate, min, max) do
+    new_temp = temp + rate
     cond do
-      temp < min -> min
-      temp > max -> max
-      true -> temp
+      new_temp < min -> {min, rate * -1}  # Reverse the rate if temperature goes below minimum
+      new_temp > max -> {max, rate * -1}  # Reverse the rate if temperature goes above maximum
+      true -> {new_temp, rate}  # Normal case where temperature is within limits
     end
   end
 
