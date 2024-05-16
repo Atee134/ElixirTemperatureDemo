@@ -73,5 +73,5 @@ window.temperatureChannel = temperatureChannel;
 
 // Initialize the table when the document is ready
 document.addEventListener('DOMContentLoaded', () => {
-  createTable(30, 5000);  // Example with rowLength = 30, totalCells = 1000
+  createTable(30, 5000);
 });

@@ -53,13 +53,15 @@
       </small>
     </h1>
     <h2 class="text-2xl mt-4 font-semibold leading-10 tracking-tighter text-zinc-900">
-      Temperature data logging demo
+      ElproElixir - ChatGPT demo
     </h2>
     <p class="mt-4 text-base leading-7 text-zinc-600">
-      Made by (mostly) ChatGPT and AskTheCode plugin. Gathers temperature data using Elixir language and stores them in PostgreSQL database. Provides UI with Phoenix framework.
+      Developed with the help of ChatGPT, this application uses Elixir's GenServer to simulate thousands of temperature sensors. Real-time temperature data is broadcasted via Phoenix Channels and transported over WebSocket connections. The client-side interface, created with the Phoenix framework, dynamically updates the UI to display the latest temperature readings. The application employs color coding to visually represent temperature variations, ensuring an intuitive and easily interpretable display of data.
     </p>
-    <a href="/temperatures" class="text-blue-600 hover:text-blue-800 transition duration-300">
-      View Temperature Data
-    </a>
+    <div class="my-8">
+      <a href="/temperatures" class="px-12 py-2 mx-12 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-700 transition duration-300">
+        View Real-Time Sensor Temperatures
+      </a>
+    </div>
   </div>
 </div>
